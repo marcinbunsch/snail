@@ -1,0 +1,26 @@
+<div id="nav">
+    <h3>EC2</h3>    
+
+    <ul>
+        <li><% if request.path_info =~ /^\/instance/ %><span class="inactive">Instances</span><% else %><%= link_to 'Instances', '/instances' %><% end %></li>
+        <li><% if request.path_info =~ /^\/address/ %><span class="inactive">IP Addresses</span><% else %><%= link_to 'IP Addresses', '/addresses' %><% end %></li>
+        <li><% if request.path_info =~ /^\/image/ %><span class="inactive">Images</span><% else %><%= link_to 'Images', '/images' %><% end %></li>
+        <li><% if request.path_info =~ /^\/security/ %><span class="inactive">Security</span><% else %><%= link_to 'Security', '/security' %><% end %></li>
+        <li><% if request.path_info =~ /^\/key/ %><span class="inactive">Key Pairs</span><% else %><%= link_to 'Key Pairs', '/keys' %><% end %></li>
+    </ul>
+
+    <h3>S3</h3>
+
+    <ul>
+        <li><%= link_to 'Buckets', '/buckets' %>
+    </ul>
+    
+    <h3>Links</h3>
+
+    <ul>
+        <li><a href="http://aws.amazon.com/">AWS Home</a></li>
+        <li><a href="http://status.aws.amazon.com/">AWS Status</a></li>
+        <li><a href="http://aws.amazon.com/documentation/">AWS Docs</a></li>
+    </ul>
+
+</div>

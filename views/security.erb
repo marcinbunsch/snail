@@ -1,0 +1,7 @@
+<% @title = 'Security Groups' %>
+
+<div>
+    <% @groups.each do |group| %>
+        <b><%= group[:aws_group_name] %></b> <small><%= group.inspect %></small>
+    <% end %>
+</div>

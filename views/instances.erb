@@ -1,0 +1,44 @@
+<% @title = 'Instances' %>
+
+<% unless @instances.empty? %>
+
+    <div id="instances">
+        <% @instances.each_with_index do |instance, i| %>
+    
+            <div class="instance<% if i % 2 == 1%> odd<% end %>">
+                [<b class="state state-<%= instance[:aws_state] %>">
+                    <span title="<%= instance[:aws_instance_id] %>"><%= instance[:aws_state] %></span>
+                </b>]
+        
+                <%= link_to instance[:aws_image_id], "/images/search/#{instance[:aws_image_id]}" %>
+        
+                <%= link_to(image_tag('info.png', :alt => 'Console Output'), "/instance/#{instance[:aws_instance_id]}/output") %>
+                
+                <% if instance[:aws_state] == 'running' %>
+                    <%= link_to image_tag('reboot.png', :alt => 'Reboot Instance'), "/instance/#{instance[:aws_instance_id]}/reboot", :onclick => "return confirm('Reboot: Are you sure?')"  %>
+                    <%= link_to image_tag('minus.png', :alt => 'Terminate Instance'), "/instance/#{instance[:aws_instance_id]}/terminate", :onclick => "return confirm('Terminate: Are you sure?')" %>
+                <% end %>
+                
+                <div><small>
+                    Type: <%= instance[:aws_instance_type] %>, Groups: <%= instance[:aws_groups] %>, 
+                    Key: <%= instance[:ssh_key_name] %>, Zone: <%= instance[:aws_availability_zone] %>
+                    
+                </small></div>
+                
+                <% if instance[:aws_state] == 'running' %>
+                    <div>
+                        Public: <span><%= instance[:dns_name] %></span> <a href="http://<%= instance[:dns_name] %>" target="_new">url</a><br/>
+                        Private: <span><%= instance[:private_dns_name] %></span>
+                    </div>
+                <% end %>
+                
+            </div>
+        <% end %>
+    </div>
+
+<% else %>
+
+    <p><i>You have no current instances.</i></p>
+    <p><%= link_to 'Choose an image', '/images' %> to launch a new instance.</p>
+
+<% end %>

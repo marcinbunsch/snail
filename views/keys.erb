@@ -1,0 +1,7 @@
+<% @title = 'Keys' %>
+
+<div>
+    <% @keys.each do |key| %>
+        <b><%= key[:aws_key_name] %></b> <small><%= key.inspect %></small>
+    <% end %>
+</div>

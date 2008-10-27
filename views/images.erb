@@ -1,0 +1,43 @@
+<a name="top"/>
+
+<% @title = 'Images' %>
+
+<div id="images">
+    
+    <div>
+        <div style="float:right">
+            <form action="/images/search" method="GET">
+                Search: <input type="text" name="query" value="<%= params[:query] %>">
+                <%= link_to 'All', '/images' %>
+            </form>
+        </div>
+        <div>
+            <%= link_to 'i386', '#', :onclick => "$('#x86_64').hide(); $('#i386').show()" %> | 
+            <%= link_to 'x86_64', '#', :onclick => "$('#i386').hide(); $('#x86_64').show()" %>
+        </div>
+        <br clear="all"/>
+    </div>
+    
+    <div id="i386">
+        <% @i386.each_with_index do |machine, i| %>
+            <div class="image<% if i % 2 == 1%> odd<% end %>">
+                <b><%= machine[:aws_location].gsub('.manifest.xml', '').gsub('.img', '').gsub('/image', '').gsub('-', ' ') %></b>
+                <small>owner: <%= link_to machine[:aws_owner], "/images/search/#{machine[:aws_owner]}" %></small>
+                <%= link_to image_tag('add.png', :alt => 'Launch Instance'), "/images/#{machine[:aws_id]}/launch"  %>
+            </div>
+        <% end %>
+    </div>
+    
+    <div id="x86_64" style="display:none">
+        <% @x86_64.each_with_index do |machine, i| %>
+            <div class="image<% if i % 2 == 1%> odd<% end %>">
+                <b><%= machine[:aws_location].gsub('.manifest.xml', '').gsub('.img', '').gsub('/image', '').gsub('-', ' ') %></b>
+                <small>owner: <%= link_to machine[:aws_owner], "/images/search/#{machine[:aws_owner]}" %></small>
+                <%= link_to image_tag('add.png', :alt => 'Launch Instance'), "/images/#{machine[:aws_id]}/launch"  %>
+            </div>
+        <% end %>
+    </div>
+    
+    <a href="#top">top</a>
+    
+</div>

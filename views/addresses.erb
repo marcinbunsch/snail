@@ -1,0 +1,18 @@
+<% @title = 'Elastic IP addresses' %>
+
+<% unless @addresses.empty? %>
+
+    <% @addresses.each do |address| %>
+        <%= address.inspect %> 
+        <% unless address[:instance_id].blank? %>
+            <%= link_to image_tag('cancel.png', :alt => 'Disassociate Address'), "/address/#{address[:public_ip]}/disassociate", :onclick => "return confirm('Disassociate Address: Are you sure?')" %>
+        <% end %>
+        <%= link_to image_tag('minus.png', :alt => 'Release Address'), "/address/#{address[:public_ip]}/release", :onclick => "return confirm('Release Address: Are you sure?')" %>
+        <br/><br/>
+    <% end %>
+
+<% else %>
+    <p><i>You have no allocated IP addresses</i></p>
+<% end %>
+
+<p><%= link_to image_tag('add.png'), '/addresses/allocate' %> Allocate a new IP address</p>

@@ -1,0 +1,3 @@
+<% @buckets.each do |bucket| %>
+    <%= bucket %> <%= link_to 'keys', "/bucket/#{bucket}/keys" %><br/>
+<% end %>
