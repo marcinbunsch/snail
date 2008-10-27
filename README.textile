@@ -16,5 +16,9 @@ h2. Installing and Running
 
 h2. Configuration (snail.yml)
 
+<pre>
+<code>
 aws_key: YOUR_KEY
 aws_secret: YOUR_SECRET_KEY
+</code>
+</pre>
