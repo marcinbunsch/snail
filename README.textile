@@ -1,0 +1,20 @@
+h1. Snail
+
+Snail is a web interface for Amazon Web Services.
+
+h2. Dependencies
+
+* gem install sinatra right_aws
+
+h2. Installing and Running
+
+* git clone git://github.com/moomerman/snail.git
+* cd snail
+* create snail.yml with your aws key and secret key in (see below)
+* ./snail.rb
+* go to http://localhost:4567/
+
+h2. Configuration (snail.yml)
+
+aws_key: YOUR_KEY
+aws_secret: YOUR_SECRET_KEY
