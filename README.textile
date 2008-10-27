@@ -1,6 +1,6 @@
 h1. Snail
 
-Snail is a web interface for Amazon Web Services.
+Snail is a web interface for Amazon Web Services (AWS) written using the sinatra web framework.
 
 h2. Dependencies
 
