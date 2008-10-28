@@ -6,7 +6,7 @@ body {
   font-family:verdana,arial,helvetica,sans-serif;
 }
 
-#hd {background-color:black; border: 1px solid; color:white; height:20px; padding:5px;}
+#hd {background-color:black; border: 1px solid; color:white; padding:7px;}
 
 #nav {letter-spacing:0.2px; line-height:15px; margin-top:10px; margin-bottom:20px;}
 #nav a:link {text-decoration:none; color:#004B91;}
@@ -15,11 +15,11 @@ body {
 #nav li {border-top:1px solid #CCCCCC; padding:5px;}
 #nav li a {margin-left:10px;}
 #nav .inactive {margin-left:10px;}
-#nav h3 {font-weight:bold; margin-bottom:5px; margin-top:10px;}
+#nav h3 {font-weight:bold; margin-bottom:10px; margin-top:10px;}
 
 #main {margin-top:15px; margin-bottom:20px;}
 
-#ft {background-color:#cccccc;}
+#ft {background-color:#cccccc; padding:5px;}
 
 #instances .state {color:yellow; margin-bottom:10px;}
 #instances .state-terminated {color:red;}
