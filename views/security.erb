@@ -1,7 +1,14 @@
 <% @title = 'Security Groups' %>
 
-<div>
-    <% @groups.each do |group| %>
-        <b><%= group[:aws_group_name] %></b> <small><%= group.inspect %></small>
-    <% end %>
-</div>
+<p><%= link_to image_tag('add.png', :alt => 'Create a new Security Group'), '#' %> Create a new Secutiry Group</p>
+<br/>
+<% @groups.each do |group| %>
+    <b><%= group[:aws_group_name] %></b> <%= group[:aws_description] %>
+    <%= link_to image_tag('minus.png', :alt => 'Delete Security Group'), '#' %>
+    <br/>
+    <small>
+        <% group[:aws_perms].each do |perm| %>
+            <%= perm.inspect %><br/>
+        <% end %>
+    </small>
+<% end %>

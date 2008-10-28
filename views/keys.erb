@@ -1,7 +1,8 @@
 <% @title = 'Keys' %>
 
-<div>
-    <% @keys.each do |key| %>
-        <b><%= key[:aws_key_name] %></b> <small><%= key.inspect %></small>
-    <% end %>
-</div>
+<p><%= link_to image_tag('add.png', :alt => 'Create a new Key Pair'), '#' %> Create a new SSH Key Pair</p>
+<br/>
+
+<% @keys.each do |key| %>
+    <b><%= key[:aws_key_name] %></b> <small><%= key[:aws_fingerprint] %></small> <%= link_to image_tag('minus.png', :alt => 'Delete Key Pair'), '#' %><br/>
+<% end %>

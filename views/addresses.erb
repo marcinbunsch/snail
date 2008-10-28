@@ -1,5 +1,8 @@
 <% @title = 'Elastic IP addresses' %>
 
+<p><%= link_to image_tag('add.png'), '/addresses/allocate' %> Allocate a new IP address</p>
+<br/>
+
 <% unless @addresses.empty? %>
 
     <% @addresses.each do |address| %>
@@ -14,5 +17,3 @@
 <% else %>
     <p><i>You have no allocated IP addresses</i></p>
 <% end %>
-
-<p><%= link_to image_tag('add.png'), '/addresses/allocate' %> Allocate a new IP address</p>

@@ -4,8 +4,8 @@
     <li><% if request.path_info =~ /^\/instance/ %><span class="inactive">Instances</span><% else %><%= link_to 'Instances', '/instances' %><% end %></li>
     <li><% if request.path_info =~ /^\/address/ %><span class="inactive">Elastic IPs</span><% else %><%= link_to 'Elastic IPs', '/addresses' %><% end %></li>
     <li><% if request.path_info =~ /^\/image/ %><span class="inactive">Images (AMIs)</span><% else %><%= link_to 'Images (AMIs)', '/images' %><% end %></li>
-    <li><% if request.path_info =~ /^\/security/ %><span class="inactive">Security Groups</span><% else %><%= link_to 'Security Groups', '/security' %><% end %></li>
-    <li><% if request.path_info =~ /^\/key/ %><span class="inactive">Key Pairs</span><% else %><%= link_to 'Key Pairs', '/keys' %><% end %></li>
+    <li><% if request.path_info =~ /^\/group/ %><span class="inactive">Security Groups</span><% else %><%= link_to 'Security Groups', '/groups' %><% end %></li>
+    <li><% if request.path_info =~ /^\/key/ %><span class="inactive">SSH Key Pairs</span><% else %><%= link_to 'SSH Key Pairs', '/keys' %><% end %></li>
 </ul>
 
 <h3>S3</h3>

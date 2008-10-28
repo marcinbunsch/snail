@@ -5,6 +5,8 @@ require 'sinatra'
 require 'right_aws'
 require 'yaml'
 
+Dir["lib/*.rb"].each { |x| load x }
+
 configure do
   begin
     config = YAML.load_file("snail.yml")
@@ -24,24 +26,7 @@ before do
 end
 
 helpers do
-  #include Helpers
-  def link_to(text, link='#', options = {})
-    tag = "<a href='#{link}'"
-    tag += " class=\"#{options[:class]}\"" if options[:class]
-    tag += " target=\"#{options[:target]}\"" if options[:target]
-    tag += " onclick=\"#{options[:onclick]}\"" if options[:onclick]
-    tag += ">#{text}</a>"
-  end
-  def image_tag(file, options={})
-    tag = "<img src='/images/#{file}'"
-    tag += " alt='#{options[:alt]}' title='#{options[:alt]}' " if options[:alt]
-    tag += "/>"
-  end
-  
-  def partial(name, options={})
-    erb("_#{name.to_s}".to_sym, options.merge(:layout => false))
-  end
-  
+  include Helpers
 end
 
 get '/' do
@@ -128,8 +113,13 @@ end
 
 # Other EC2
 
-get '/security' do
+get '/groups' do
   @groups = @ec2.describe_security_groups
+  erb :security
+end
+
+get '/group/:group_name' do
+  @groups = @ec2.describe_security_groups.find_all{|x| x[:aws_group_name] == params[:group_name]}
   erb :security
 end
 
