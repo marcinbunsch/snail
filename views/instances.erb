@@ -7,9 +7,10 @@
     
             <div class="instance<% if i % 2 == 1%> odd<% end %>">
                 [<b class="state state-<%= instance[:aws_state] %>">
+                    <%= instance[:aws_instance_id] %>
                     <span title="<%= instance[:aws_instance_id] %>"><%= instance[:aws_state] %></span>
                 </b>]
-        
+                
                 <%= link_to instance[:aws_image_id], "/images/search/#{instance[:aws_image_id]}" %>
                 
                 launched <%= time_ago_or_time_stamp(Time.parse(instance[:aws_launch_time])) %>

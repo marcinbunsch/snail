@@ -85,6 +85,7 @@ end
 
 get '/addresses' do
   @addresses = @ec2.describe_addresses
+  @instances = @ec2.describe_instances.reverse
   erb :addresses
 end
 
@@ -99,7 +100,7 @@ get '/address/*/release' do
   redirect '/addresses'
 end
 
-get '/address/*/associate/:instance_id' do
+post '/address/*/associate' do
   ip_address = request.path_info.split('/')[2]
   @ec2.associate_address(params[:instance_id], ip_address)
   redirect '/addresses'

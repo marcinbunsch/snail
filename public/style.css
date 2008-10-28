@@ -21,7 +21,7 @@ body {
 
 #ft {background-color:#cccccc; padding:5px;}
 
-#instances .state {color:yellow; margin-bottom:10px;}
+#instances .state {color:orange; margin-bottom:10px;}
 #instances .state-terminated {color:red;}
 #instances .state-running {color:green;}
 

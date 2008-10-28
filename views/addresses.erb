@@ -6,9 +6,20 @@
 <% unless @addresses.empty? %>
 
     <% @addresses.each do |address| %>
-        <%= address.inspect %> 
+        <b><%= address[:public_ip] %></b>
         <% unless address[:instance_id].blank? %>
+            associated with <%= link_to address[:instance_id], "/instances#address[:instance_id]" %>
             <%= link_to image_tag('cancel.png', :alt => 'Disassociate Address'), "/address/#{address[:public_ip]}/disassociate", :onclick => "return confirm('Disassociate Address: Are you sure?')" %>
+        <% else %>
+            <form action="/address/<%= address[:public_ip] %>/associate" style="display:inline" method="POST">
+                <select name="instance_id">
+                    <option value="">Associate with...</option>
+                    <% @instances.each do |instance| %>
+                        <option value="<%= instance[:aws_instance_id] %>"><%= instance[:aws_instance_id] %> (<%= instance[:aws_state] %>)</option> 
+                    <% end %>
+                </select>
+                <input type="submit" value="go">
+            </form>
         <% end %>
         <%= link_to image_tag('minus.png', :alt => 'Release Address'), "/address/#{address[:public_ip]}/release", :onclick => "return confirm('Release Address: Are you sure?')" %>
         <br/><br/>
