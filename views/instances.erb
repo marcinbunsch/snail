@@ -21,11 +21,12 @@
                     <%= link_to image_tag('minus.png', :alt => 'Terminate Instance'), "/instance/#{instance[:aws_instance_id]}/terminate", :onclick => "return confirm('Terminate: Are you sure?')" %>
                 <% end %>
                 
-                <div><small>
-                    Type: <%= instance[:aws_instance_type] %>, Groups: <% instance[:aws_groups].each do |group| %><%= link_to group, "/group/#{group}" %><% end %>, 
-                    Key: <%= instance[:ssh_key_name] %>, Zone: <%= instance[:aws_availability_zone] %>
-                    
-                </small></div>
+                <div>
+                    <small>
+                        Type: <%= instance[:aws_instance_type] %>, Groups: <% instance[:aws_groups].each do |group| %><%= link_to group, "/group/#{group}" %><% end %>, 
+                        Key: <%= instance[:ssh_key_name] %>, Zone: <%= instance[:aws_availability_zone] %>
+                    </small>
+                </div>
                 
                 <% if instance[:aws_state] == 'running' %>
                     <div>
