@@ -8,25 +8,41 @@ require 'yaml'
 Dir["lib/*.rb"].each { |x| load x }
 
 configure do
-  begin
-    config = YAML.load_file("snail.yml")
-  rescue
-  end
-  if config
-    AWS_KEY = config['aws_key']
-    AWS_SECRET = config['aws_secret']
-    @@ec2 = RightAws::Ec2.new(AWS_KEY, AWS_SECRET)
-    @@s3 = RightAws::S3.new(AWS_KEY, AWS_SECRET)
-  end
+  set_option :sessions, true
+  @@session_keys = {}
+  @@config = YAML.load_file("snail.yml") rescue nil || false
 end
 
 before do
-  @ec2 = @@ec2
-  @s3 = @@s3
+  if session[:key] and @@session_keys[session[:key]]
+    @ec2 = @@session_keys[session[:key]][:ec2]
+    @s3 = @@session_keys[session[:key]][:s3]
+  elsif @@config
+    @@session_keys[@@config['aws_key']] ||= {
+      :ec2 => RightAws::Ec2.new(@@config['aws_key'], @@config['aws_secret']),
+      :s3 => RightAws::S3.new(@@config['aws_key'], @@config['aws_secret'])
+    }
+    session[:key] = @@config['aws_key']
+  else
+    redirect '/setup' unless request.path_info =~ /\/setup/ or request.path_info =~ /.css/
+  end
 end
 
 helpers do
   include Helpers
+end
+
+get '/setup' do
+  erb :setup
+end
+
+post '/setup' do
+  @@session_keys[params[:key]] = {
+    :ec2 => RightAws::Ec2.new(params[:key], params[:secret]),
+    :s3 => RightAws::S3.new(params[:key], params[:secret])
+  }
+  session[:key] = params[:key]
+  redirect '/instances'
 end
 
 get '/' do
