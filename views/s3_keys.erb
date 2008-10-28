@@ -1,0 +1,3 @@
+<% @keys.each do |key| %>
+    <%= key.name %> <%= link_to('link', key.public_link) %> <%= link_to 'download', "/bucket/#{@bucket.name}/key/#{key.name}" %><br/>
+<% end %>

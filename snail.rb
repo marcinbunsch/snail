@@ -166,7 +166,15 @@ get '/buckets' do
   erb :buckets
 end
 
-get '/bucket/:name/keys' do
-  @output = @s3.bucket(params[:name]).keys.map{|k| k.name}
-  erb :dump
+get '/bucket/:bucket_name/keys' do
+  @bucket = @s3.bucket(params[:bucket_name])
+  @keys = @bucket.keys
+  erb :s3_keys
+end
+
+get '/bucket/*/key/*' do
+  bucket_name = request.path_info.split('/')[2]
+  key_name = request.path_info.split('/')[4]
+  @bucket = @s3.bucket(bucket_name)
+  send_data(@bucket.get(key_name))
 end
