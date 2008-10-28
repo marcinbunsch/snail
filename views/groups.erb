@@ -15,40 +15,41 @@
             image_tag('minus.png', :alt => 'Delete Security Group'), 
             "/group/#{group[:aws_group_name]}/delete", :onclick => "return confirm('Delete Security Group: Are you sure?')" 
         ) %>
-        <br/>
-        <small>
-            <% group[:aws_perms].each do |perm| %>
-                <%= perm.inspect %> 
-                <% if perm[:group] %>
-                    <%= link_to( 
-                        'revoke',
-                        "/group/#{group[:aws_group_name]}/revoke?group=#{perm[:group]}&owner=#{perm[:owner]}" 
-                    )%>
-                <% else %>
-                    <%= link_to( 
-                        'revoke',
-                        "/group/#{group[:aws_group_name]}/revoke?from=#{perm[:from_port]}&to=#{perm[:to_port]}&protocol=#{perm[:protocol]}&ip=#{perm[:cidr_ips]}" 
-                    )%>
-                <% end %>
-                <br/>
+        <br/><br/>
+            
+        <% group[:aws_perms].each do |perm| %>
+            <% if perm[:group] %>
+                Allow <%= perm[:owner] %> <%= perm[:group] %>
+                <%= link_to( 
+                    'revoke',
+                    "/group/#{group[:aws_group_name]}/revoke?group=#{perm[:group]}&owner=#{perm[:owner]}" 
+                )%>
+            <% else %>
+                Allow <%= perm[:protocol].upcase %> IPs:<%= perm[:cidr_ips] %> Port:<%= perm[:from_port] %>:<%= perm[:to_port] %>
+                <%= link_to( 
+                    'revoke',
+                    "/group/#{group[:aws_group_name]}/revoke?from=#{perm[:from_port]}&to=#{perm[:to_port]}&protocol=#{perm[:protocol]}&ip=#{perm[:cidr_ips]}" 
+                )%>
             <% end %>
-            <%= link_to'+ Add new rule', '#', :onclick => "$('#add_rule_#{group[:aws_group_name]}').toggle()" %>
+            <br/>
+        <% end %>
+
+        <%= link_to'+ Add new rule', '#', :onclick => "$('#add_rule_#{group[:aws_group_name]}').toggle()" %>
+        
+        <div id="add_rule_<%= group[:aws_group_name] %>" class="add_rule">
+            <form action="/group/<%= group[:aws_group_name] %>/authorize" method="POST">
+                <select name="protocol">
+                    <option value="tcp">tcp</option>
+                    <option value="udp">udp</option>
+                    <option value="icmp">icmp</option>
+                </select>
+                IP <input name="ip" type="text"/>
+                From <input name="from" type="text" size="4"/>
+                to <input name="to" type="text" size="4"/>
+                <input type="submit" value="add"/> <%= link_to 'Cancel', '#', :onclick => "$('#add_rule_#{group[:aws_group_name]}').toggle()" %>
+            </form>
+        </div>
             
-            <div id="add_rule_<%= group[:aws_group_name] %>" class="add_rule">
-                <form action="/group/<%= group[:aws_group_name] %>/authorize" method="POST">
-                    <select name="protocol">
-                        <option value="udp">udp</option>
-                        <option value="icmp">icmp</option>
-                        <option value="tcp">tcp</option>
-                    </select>
-                    IP <input name="ip" type="text"/>
-                    From <input name="from" type="text" size="4"/>
-                    to <input name="to" type="text" size="4"/>
-                    <input type="submit" value="add"/> <%= link_to 'Cancel', '#', :onclick => "$('#add_rule_#{group[:aws_group_name]}').toggle()" %>
-                </form>
-            </div>
-            
-        </small>
     </div>    
 <% end %>
 

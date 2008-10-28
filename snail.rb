@@ -149,6 +149,16 @@ get '/keys' do
   erb :keys
 end
 
+get '/key/:key_name/delete' do
+  @ec2.delete_key_pair(params[:key_name])
+  redirect '/keys'
+end
+
+post '/key' do
+  output = @ec2.create_key_pair(params[:key_name])
+  output[:aws_material]
+end
+
 # S3
 
 get '/buckets' do
