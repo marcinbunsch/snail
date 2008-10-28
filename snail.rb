@@ -132,6 +132,11 @@ get '/group/:group_name/revoke' do
   redirect '/groups'
 end
 
+post '/group/:group_name/authorize' do
+  @ec2.authorize_security_group_IP_ingress(params[:group_name], params[:from], params[:to], params[:protocol], params[:ip])
+  redirect '/groups'
+end
+
 post '/group' do
   @ec2.create_security_group(params[:name], params[:description])
   redirect '/groups'
