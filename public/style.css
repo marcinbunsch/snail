@@ -1,30 +1,25 @@
-body {
-  font-family:verdana,arial,helvetica,clean,sans-serif;
-  font-size:12px;
-  font-size-adjust:none;
-  font-style:normal;
-  font-variant:normal;
-  font-weight:normal;
+html {
+   font-size: 62.5%;
 }
 
-img {border:0;}
+body {
+  font-family:verdana,arial,helvetica,sans-serif;
+}
 
-#container {width: 1000px;}
+#hd {background-color:black; border: 1px solid; color:white; height:20px; padding:5px;}
 
-#header {font-family:verdana; background-color:black; border: 1px solid; color:white; height:20px; padding:5px;}
-#header h2 {font-size:1.2em; margin:0px; padding:0px; padding-bottom:2px;}
-
+#nav {letter-spacing:0.2px; line-height:15px; margin-top:10px; margin-bottom:20px;}
 #nav a:link {text-decoration:none; color:#004B91;}
 #nav a:visited {text-decoration:none; color:#004B91;}
 #nav a:hover {color:#e47911; text-decoration:underline;}
-#nav {float:left; margin-right:20px; width: 140px; padding:10px; font-weight:bold; text-decoration:none; text-transform:none;}
-#nav li {list-style-type: none; margin-left:-25px; border-top:1px solid #CCCCCC; padding:5px;}
+#nav li {border-top:1px solid #CCCCCC; padding:5px;}
 #nav li a {margin-left:10px;}
 #nav .inactive {margin-left:10px;}
+#nav h3 {font-weight:bold; margin-bottom:5px; margin-top:10px;}
 
-#footer {width:1000px; background-color:#cccccc;}
+#main {margin-top:15px; margin-bottom:20px;}
 
-#main {float:left; width:760px; padding:25px;}
+#ft {background-color:#cccccc;}
 
 #instances .state {color:yellow; margin-bottom:10px;}
 #instances .state-terminated {color:red;}
