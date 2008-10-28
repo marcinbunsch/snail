@@ -118,6 +118,11 @@ get '/groups' do
   erb :groups
 end
 
+get '/group/:group_name/delete' do
+  @ec2.delete_security_group(params[:group_name])
+  redirect '/groups'
+end
+
 get '/group/:group_name/revoke' do
   if params[:group]
     @ec2.revoke_security_group_named_ingress(params[:group_name], params[:owner], params[:group])
@@ -127,7 +132,9 @@ get '/group/:group_name/revoke' do
   redirect '/groups'
 end
 
-post '/group/:group_name' do
+post '/group' do
+  @ec2.create_security_group(params[:name], params[:description])
+  redirect '/groups'
 end
 
 # SSH Key Pairs

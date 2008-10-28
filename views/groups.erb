@@ -1,11 +1,11 @@
 <% @title = 'Security Groups' %>
 
-<p><%= link_to image_tag('add.png', :alt => 'Create a new Security Group'), '#' %> Create a new Secutiry Group</p>
+<p><%= link_to image_tag('add.png', :alt => 'Create a new Security Group'), '#', :onclick => "$('#group_create').toggle();$('#overlay').toggle()" %> Create a new Security Group</p>
 <br/>
 <% @groups.each do |group| %>
     <div id="group_<%= group[:aws_group_name] %>" class="group">
         <b><%= group[:aws_group_name] %></b> <%= group[:aws_description] %>
-        <%= link_to image_tag('minus.png', :alt => 'Delete Security Group'), '#' %>
+        <%= link_to image_tag('minus.png', :alt => 'Delete Security Group'), "/group/#{group[:aws_group_name]}/delete", :onclick => "return confirm('Delete Security Group: Are you sure?')" %>
         <br/>
         <small>
             <% group[:aws_perms].each do |perm| %>
@@ -26,4 +26,20 @@
             <%= link_to '+ Add new rule', '#' %>
         </small>
     </div>
+    
 <% end %>
+
+<div id="group_create" class="lightbox">
+    <h2>Create A Security Group</h2>
+    <form action="/group" method="POST">
+        <p>Group Name: <input type="text" name="name" /></p>
+        <p>Group Description: <input type="text" name="description" /></p>
+        <p><input type="submit" value="create"/> <%= link_to 'Cancel', '#', :onclick => "$('#group_create').toggle();$('#overlay').toggle()" %></p>
+    </form>
+</div>
+
+<div id="group_add_permission" class="lightbox">
+    perm
+</div>
+
+<div id="overlay" class="lightbox_overlay"/>
