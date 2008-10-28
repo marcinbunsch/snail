@@ -23,8 +23,8 @@
                 
                 <div>
                     <small>
-                        Type: <%= instance[:aws_instance_type] %>, Groups: <% instance[:aws_groups].each do |group| %><%= link_to group, "/group/#{group}" %><% end %>, 
-                        Key: <%= instance[:ssh_key_name] %>, Zone: <%= instance[:aws_availability_zone] %>
+                        Type: <%= instance[:aws_instance_type] %>, Groups: <% instance[:aws_groups].each do |group| %><%= link_to group, "/groups##{group}" %><% end %>, 
+                        Key: <%= link_to instance[:ssh_key_name], "/keys##{instance[:ssh_key_name]}" %>, Zone: <%= instance[:aws_availability_zone] %>
                     </small>
                 </div>
                 

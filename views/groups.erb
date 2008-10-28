@@ -1,0 +1,29 @@
+<% @title = 'Security Groups' %>
+
+<p><%= link_to image_tag('add.png', :alt => 'Create a new Security Group'), '#' %> Create a new Secutiry Group</p>
+<br/>
+<% @groups.each do |group| %>
+    <div id="group_<%= group[:aws_group_name] %>" class="group">
+        <b><%= group[:aws_group_name] %></b> <%= group[:aws_description] %>
+        <%= link_to image_tag('minus.png', :alt => 'Delete Security Group'), '#' %>
+        <br/>
+        <small>
+            <% group[:aws_perms].each do |perm| %>
+                <%= perm.inspect %> 
+                <% if perm[:group] %>
+                    <%= link_to( 
+                        '- revoke',
+                        "/group/#{group[:aws_group_name]}/revoke?group=#{perm[:group]}&owner=#{perm[:owner]}" 
+                    )%>
+                <% else %>
+                    <%= link_to( 
+                        '- revoke',
+                        "/group/#{group[:aws_group_name]}/revoke?from=#{perm[:from_port]}&to=#{perm[:to_port]}&protocol=#{perm[:protocol]}&ip=#{perm[:cidr_ips]}" 
+                    )%>
+                <% end %>
+                <br/>
+            <% end %>
+            <%= link_to '+ Add new rule', '#' %>
+        </small>
+    </div>
+<% end %>

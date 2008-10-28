@@ -111,17 +111,26 @@ get '/address/*/disassociate' do
   redirect '/addresses'
 end
 
-# Other EC2
+# Security Groups
 
 get '/groups' do
   @groups = @ec2.describe_security_groups
-  erb :security
+  erb :groups
 end
 
-get '/group/:group_name' do
-  @groups = @ec2.describe_security_groups.find_all{|x| x[:aws_group_name] == params[:group_name]}
-  erb :security
+get '/group/:group_name/revoke' do
+  if params[:group]
+    @ec2.revoke_security_group_named_ingress(params[:group_name], params[:owner], params[:group])
+  else
+    @ec2.revoke_security_group_IP_ingress(params[:group_name], params[:from], params[:to], params[:protocol], params[:ip])
+  end
+  redirect '/groups'
 end
+
+post '/group/:group_name' do
+end
+
+# SSH Key Pairs
 
 get '/keys' do
   @keys = @ec2.describe_key_pairs
