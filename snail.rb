@@ -156,7 +156,7 @@ end
 
 post '/key' do
   output = @ec2.create_key_pair(params[:key_name])
-  output[:aws_material]
+  "<pre>" + output[:aws_material] + "</pre>"
 end
 
 # S3
