@@ -14,17 +14,19 @@ configure do
 end
 
 before do
-  if session[:key] and @@session_keys[session[:key]]
-    @ec2 = @@session_keys[session[:key]][:ec2]
-    @s3 = @@session_keys[session[:key]][:s3]
-  elsif @@config
+  if @@config and !session[:key]
     @@session_keys[@@config['aws_key']] ||= {
       :ec2 => RightAws::Ec2.new(@@config['aws_key'], @@config['aws_secret']),
       :s3 => RightAws::S3.new(@@config['aws_key'], @@config['aws_secret'])
     }
     session[:key] = @@config['aws_key']
-  else
+  end
+  unless session[:key]
     redirect '/setup' unless request.path_info =~ /\/setup/ or request.path_info =~ /.css/
+  end
+  if session[:key] and @@session_keys[session[:key]]
+    @ec2 = @@session_keys[session[:key]][:ec2]
+    @s3 = @@session_keys[session[:key]][:s3]
   end
 end
 
