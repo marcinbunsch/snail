@@ -1,0 +1,3 @@
+project_name:
+  aws_key: YOUR_KEY
+  aws_secret: YOUR_SECRET

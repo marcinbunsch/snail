@@ -8,17 +8,18 @@ h2. Dependencies
 
 h2. Installing and Running
 
-* git clone git://github.com/moomerman/snail.git
+* git clone git://github.com/marcinbunsch/snail.git
 * cd snail
-* create snail.yml with your aws key and secret key in (see below)
+* create config/snail.yml with your aws key and secret key in (see below)
 * ./snail.rb
 * go to http://localhost:4567/
 
-h2. Configuration (snail.yml)
+h2. Configuration (config/snail.yml)
 
 <pre>
 <code>
-aws_key: YOUR_KEY
-aws_secret: YOUR_SECRET_KEY
+project_name:
+  aws_key: YOUR_KEY
+  aws_secret: YOUR_SECRET_KEY
 </code>
 </pre>

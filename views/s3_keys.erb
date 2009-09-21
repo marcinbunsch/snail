@@ -1,3 +1,5 @@
+<table>
 <% @keys.each do |key| %>
-    <%= key.name %> <%= link_to('link', key.public_link) %> <%= link_to 'download', "/bucket/#{@bucket.name}/key/#{key.name}" %><br/>
+  <tr><td><%= key.name %></td><td><%= link_to('link', key.public_link) %> <%= link_to 'download', "/#{@project}/bucket/#{@bucket.name}/key/#{key.name}" %></td></tr>
 <% end %>
+</table>

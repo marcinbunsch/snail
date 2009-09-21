@@ -1,199 +1,40 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+# make sure we're using the right version of gems
+gem 'sinatra', :version => '0.9.4'
+gem 'right_aws', :version =>'1.10.0'
 require 'sinatra'
 require 'right_aws'
 require 'yaml'
+require 'ruby-debug'
 
+# load all files in lib
 Dir["lib/*.rb"].each { |x| load x }
+# load actions
+Dir["lib/actions/*.rb"].each { |x| load x }
+
+# set s3_config
+config_file = YAML.load_file("config/snail.yml")
+set :config, config_file
+set :projects, config_file.keys
 
 configure do
-  set_option :sessions, true
-  @@session_keys = {}
-  @@config = YAML.load_file("snail.yml") rescue nil || false
+  set :sessions, true
 end
 
 before do
-  if @@config and !session[:key]
-    @@session_keys[@@config['aws_key']] ||= {
-      :ec2 => RightAws::Ec2.new(@@config['aws_key'], @@config['aws_secret']),
-      :s3 => RightAws::S3.new(@@config['aws_key'], @@config['aws_secret'])
-    }
-    session[:key] = @@config['aws_key']
-  end
-  unless session[:key]
-    redirect '/setup' unless request.path_info =~ /\/setup/ or request.path_info =~ /.css/
-  end
-  if session[:key] and @@session_keys[session[:key]]
-    @ec2 = @@session_keys[session[:key]][:ec2]
-    @s3 = @@session_keys[session[:key]][:s3]
+  @projects = options.projects
+  first = request.path.split('/')[1]
+  if config = options.config[first]
+    @project = first
+    @ec2 = RightAws::Ec2.new(config['aws_key'], config['aws_secret'])
+    @s3 = RightAws::S3.new(config['aws_key'], config['aws_secret'])
+  else
+    redirect '/projects' if first != 'projects' and !File.exists?("public#{request.path}")
   end
 end
 
 helpers do
   include Helpers
-end
-
-get '/setup' do
-  erb :setup
-end
-
-post '/setup' do
-  @@session_keys[params[:key]] = {
-    :ec2 => RightAws::Ec2.new(params[:key], params[:secret]),
-    :s3 => RightAws::S3.new(params[:key], params[:secret])
-  }
-  session[:key] = params[:key]
-  redirect '/instances'
-end
-
-get '/' do
-  redirect '/instances'
-end
-
-# Instances
-
-get '/instances' do
-  @instances = @ec2.describe_instances.reverse
-  erb :instances
-end
-
-get '/instance/:instance_id/terminate' do
-  @output = @ec2.terminate_instances(params[:instance_id])
-  redirect '/instances'
-end
-
-get '/instance/:instance_id/output' do
-  @output = @ec2.get_console_output(params[:instance_id])
-  erb :output
-end
-
-get '/instance/:instance_id/reboot' do
-  @ec2.reboot_instances([params[:instance_id]])
-  redirect '/instances'
-end
-
-# Images
-
-get '/images' do
-  @@images ||= @ec2.describe_images.find_all{|x| x[:aws_image_type] == 'machine'}
-  @i386 = @@images.find_all{|x| x[:aws_architecture] == 'i386'}.sort {|x,y| x[:aws_location] <=> y[:aws_location] }
-  @x86_64 = @@images.find_all{|x| x[:aws_architecture] == 'x86_64'}.sort {|x,y| x[:aws_location] <=> y[:aws_location] }
-  erb :images
-end
-
-get '/images/:image_id/launch' do
-  @ec2.launch_instances(params[:image_id], :group_ids => 'default',
-                            :user_data => "Woohoo!!!",
-                            :addressing_type => "public",
-                            :key_name => "default",
-                            :availability_zone => "us-east-1c")
-  redirect '/instances'
-end
-
-get '/images/search*' do
-  params[:query] ||= request.path_info.split('/')[3]
-  redirect '/images' if params[:query].empty?
-  @i386 = @@images.find_all{|x| x[:aws_architecture] == 'i386' and x.inspect =~ /#{params[:query]}/i}.sort {|x,y| x[:aws_location] <=> y[:aws_location] }
-  @x86_64 = @@images.find_all{|x| x[:aws_architecture] == 'x86_64' and x.inspect =~ /#{params[:query]}/i}.sort {|x,y| x[:aws_location] <=> y[:aws_location] }
-  erb :images
-end
-
-# Elastic IP addresses
-
-get '/addresses' do
-  @addresses = @ec2.describe_addresses
-  @instances = @ec2.describe_instances.reverse
-  erb :addresses
-end
-
-get '/addresses/allocate' do
-  @ec2.allocate_address
-  redirect '/addresses'
-end
-
-get '/address/*/release' do
-  ip_address = request.path_info.split('/')[2]
-  @ec2.release_address(ip_address)
-  redirect '/addresses'
-end
-
-post '/address/*/associate' do
-  ip_address = request.path_info.split('/')[2]
-  @ec2.associate_address(params[:instance_id], ip_address)
-  redirect '/addresses'
-end
-
-get '/address/*/disassociate' do
-  ip_address = request.path_info.split('/')[2]
-  @ec2.disassociate_address(ip_address)
-  redirect '/addresses'
-end
-
-# Security Groups
-
-get '/groups' do
-  @groups = @ec2.describe_security_groups
-  erb :groups
-end
-
-get '/group/:group_name/delete' do
-  @ec2.delete_security_group(params[:group_name])
-  redirect '/groups'
-end
-
-get '/group/:group_name/revoke' do
-  if params[:group]
-    @ec2.revoke_security_group_named_ingress(params[:group_name], params[:owner], params[:group])
-  else
-    @ec2.revoke_security_group_IP_ingress(params[:group_name], params[:from], params[:to], params[:protocol], params[:ip])
-  end
-  redirect '/groups'
-end
-
-post '/group/:group_name/authorize' do
-  @ec2.authorize_security_group_IP_ingress(params[:group_name], params[:from], params[:to], params[:protocol], params[:ip])
-  redirect '/groups'
-end
-
-post '/group' do
-  @ec2.create_security_group(params[:name], params[:description])
-  redirect '/groups'
-end
-
-# SSH Key Pairs
-
-get '/keys' do
-  @keys = @ec2.describe_key_pairs
-  erb :keys
-end
-
-get '/key/:key_name/delete' do
-  @ec2.delete_key_pair(params[:key_name])
-  redirect '/keys'
-end
-
-post '/key' do
-  output = @ec2.create_key_pair(params[:key_name])
-  "<pre>" + output[:aws_material] + "</pre>"
-end
-
-# S3
-
-get '/buckets' do
-  @buckets = @s3.buckets.map{|b| b.name}
-  erb :buckets
-end
-
-get '/bucket/:bucket_name/keys' do
-  @bucket = @s3.bucket(params[:bucket_name])
-  @keys = @bucket.keys
-  erb :s3_keys
-end
-
-get '/bucket/*/key/*' do
-  bucket_name = request.path_info.split('/')[2]
-  key_name = request.path_info.split('/')[4]
-  @bucket = @s3.bucket(bucket_name)
-  send_data(@bucket.get(key_name))
 end

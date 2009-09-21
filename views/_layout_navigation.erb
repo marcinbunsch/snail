@@ -1,23 +1,25 @@
+<h3>Projects</h3>  
+<ul>
+  <% @projects.each do |project| %>
+     <li><% if @project == project %><span class="inactive"><%= project.capitalize %></span><% else %><%= link_to project.capitalize, "/#{project}/instances" %><% end %></li>
+  <% end %>
+</ul>
+
+<% if @project %>
 <h3>EC2</h3>    
 
 <ul>
-    <li><% if request.path_info =~ /^\/instance/ %><span class="inactive">Instances</span><% else %><%= link_to 'Instances', '/instances' %><% end %></li>
-    <li><% if request.path_info =~ /^\/address/ %><span class="inactive">Elastic IPs</span><% else %><%= link_to 'Elastic IPs', '/addresses' %><% end %></li>
-    <li><% if request.path_info =~ /^\/image/ %><span class="inactive">Images (AMIs)</span><% else %><%= link_to 'Images (AMIs)', '/images' %><% end %></li>
-    <li><% if request.path_info =~ /^\/group/ %><span class="inactive">Security Groups</span><% else %><%= link_to 'Security Groups', '/groups' %><% end %></li>
-    <li><% if request.path_info =~ /^\/key/ %><span class="inactive">SSH Key Pairs</span><% else %><%= link_to 'SSH Key Pairs', '/keys' %><% end %></li>
+    <li><% if request.path_info =~ /^\/instance/ %><span class="inactive">Instances</span><% else %><%= link_to 'Instances', "/#{@project}/instances" %><% end %></li>
+    <li><% if request.path_info =~ /^\/address/ %><span class="inactive">Elastic IPs</span><% else %><%= link_to 'Elastic IPs', "/#{@project}/addresses" %><% end %></li>
+    <li><% if request.path_info =~ /^\/image/ %><span class="inactive">Images (AMIs)</span><% else %><%= link_to 'Images (AMIs)', "/#{@project}/images" %><% end %></li>
+    <li><% if request.path_info =~ /^\/group/ %><span class="inactive">Security Groups</span><% else %><%= link_to 'Security Groups', "/#{@project}/groups" %><% end %></li>
+    <li><% if request.path_info =~ /^\/key/ %><span class="inactive">SSH Key Pairs</span><% else %><%= link_to 'SSH Key Pairs', "/#{@project}/keys" %><% end %></li>
 </ul>
 
 <h3>S3</h3>
 
 <ul>
-    <li><%= link_to 'Buckets', '/buckets' %>
+    <li><%= link_to 'Buckets', "/#{@project}/buckets"  %>
 </ul>
 
-<h3>Links</h3>
-
-<ul>
-    <li><a href="http://aws.amazon.com/" target="_new">AWS Home</a></li>
-    <li><a href="http://status.aws.amazon.com/" target="_new">AWS Status</a></li>
-    <li><a href="http://aws.amazon.com/documentation/" target="_new">AWS Docs</a></li>
-</ul>
+<% end %>

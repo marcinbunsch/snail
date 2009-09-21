@@ -15,17 +15,17 @@
                 
                 launched <%= time_ago_or_time_stamp(Time.parse(instance[:aws_launch_time])) %>
                 
-                <%= link_to(image_tag('info.png', :alt => 'Console Output'), "/instance/#{instance[:aws_instance_id]}/output") %>
+                <%= link_to(image_tag('info.png', :alt => 'Console Output'), "/#{@project}/instance/#{instance[:aws_instance_id]}/output") %>
                 
                 <% if instance[:aws_state] == 'running' %>
-                    <%= link_to image_tag('reboot.png', :alt => 'Reboot Instance'), "/instance/#{instance[:aws_instance_id]}/reboot", :onclick => "return confirm('Reboot: Are you sure?')"  %>
-                    <%= link_to image_tag('minus.png', :alt => 'Terminate Instance'), "/instance/#{instance[:aws_instance_id]}/terminate", :onclick => "return confirm('Terminate: Are you sure?')" %>
+                    <%= link_to image_tag('reboot.png', :alt => 'Reboot Instance'), "/#{@project}/instance/#{instance[:aws_instance_id]}/reboot", :onclick => "return confirm('Reboot: Are you sure?')"  %>
+                    <%= link_to image_tag('minus.png', :alt => 'Terminate Instance'), "/#{@project}/instance/#{instance[:aws_instance_id]}/terminate", :onclick => "return confirm('Terminate: Are you sure?')" %>
                 <% end %>
                 
                 <div>
                     <small>
                         Type: <%= instance[:aws_instance_type] %>, Groups: <% instance[:aws_groups].each do |group| %><%= link_to group, "/groups##{group}" %><% end %>, 
-                        Key: <%= link_to instance[:ssh_key_name], "/keys##{instance[:ssh_key_name]}" %>, Zone: <%= instance[:aws_availability_zone] %>
+                        Key: <%= link_to instance[:ssh_key_name], "/#{@project}/keys##{instance[:ssh_key_name]}" %>, Zone: <%= instance[:aws_availability_zone] %>
                     </small>
                 </div>
                 
