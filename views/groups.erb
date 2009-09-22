@@ -17,22 +17,9 @@
         ) %>
         <br/><br/>
             
-        <% group[:aws_perms].each do |perm| %>
-            <% if perm[:group] %>
-                Allow <%= perm[:owner] %> <%= perm[:group] %>
-                <%= link_to( 
-                    'revoke',
-                    "/group/#{group[:aws_group_name]}/revoke?group=#{perm[:group]}&owner=#{perm[:owner]}" 
-                )%>
-            <% else %>
-                Allow <%= perm[:protocol].upcase %> IPs:<%= perm[:cidr_ips] %> Port:<%= perm[:from_port] %>:<%= perm[:to_port] %>
-                <%= link_to( 
-                    'revoke',
-                    "/group/#{group[:aws_group_name]}/revoke?from=#{perm[:from_port]}&to=#{perm[:to_port]}&protocol=#{perm[:protocol]}&ip=#{perm[:cidr_ips]}" 
-                )%>
-            <% end %>
-            <br/>
-        <% end %>
+        <%= table(group[:aws_perms]) %>
+        
+      
 
         <%= link_to'+ Add new rule', '#', :onclick => "$('#add_rule_#{group[:aws_group_name]}').toggle()" %>
         

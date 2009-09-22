@@ -6,7 +6,7 @@
     
     <div>
         <div style="float:right">
-            <form action="/images/search" method="GET">
+            <form action="/<%= @project %>/images/search" method="GET">
                 Search: <input type="text" name="query" value="<%= params[:query] %>">
                 <%= link_to 'All', '/images' %>
             </form>
@@ -18,24 +18,13 @@
         <br clear="all"/>
     </div>
     
+
     <div id="i386">
-        <% @i386.each_with_index do |machine, i| %>
-            <div class="image<% if i % 2 == 1%> odd<% end %>">
-                <b><%= machine[:aws_location].gsub('.manifest.xml', '').gsub('.img', '').gsub('/image', '').gsub('-', ' ') %></b>
-                <small>owner: <%= link_to machine[:aws_owner], "/images/search/#{machine[:aws_owner]}" %></small>
-                <%= link_to image_tag('add.png', :alt => 'Launch Instance'), "/images/#{machine[:aws_id]}/launch"  %>
-            </div>
-        <% end %>
+      <%= table(@i386, :aws_owner, :aws_location) { |machine| link_to image_tag('add.png', :alt => 'Launch Instance'), "/images/#{machine[:aws_id]}/launch" } %>
     </div>
     
     <div id="x86_64" style="display:none">
-        <% @x86_64.each_with_index do |machine, i| %>
-            <div class="image<% if i % 2 == 1%> odd<% end %>">
-                <b><%= machine[:aws_location].gsub('.manifest.xml', '').gsub('.img', '').gsub('/image', '').gsub('-', ' ') %></b>
-                <small>owner: <%= link_to machine[:aws_owner], "/images/search/#{machine[:aws_owner]}" %></small>
-                <%= link_to image_tag('add.png', :alt => 'Launch Instance'), "/images/#{machine[:aws_id]}/launch"  %>
-            </div>
-        <% end %>
+      <%= table(@x86_64, :aws_owner, :aws_location) { |machine| link_to image_tag('add.png', :alt => 'Launch Instance'), "/images/#{machine[:aws_id]}/launch" } %>
     </div>
     
     <a href="#top">top</a>

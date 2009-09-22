@@ -1,7 +1,9 @@
 # Images
 
 get '/:project/images' do
-  @@images ||= @ec2.describe_images.find_all{|x| x[:aws_image_type] == 'machine'}
+  @@images ||= @ec2.describe_images_by_owner('self')
+  # @@images ||= @ec2.describe_images_by_executable_by('self')
+  # @@images ||= @ec2.describe_images.find_all{|x| x[:aws_image_type] == 'machine'}
   @i386 = @@images.find_all{|x| x[:aws_architecture] == 'i386'}.sort {|x,y| x[:aws_location] <=> y[:aws_location] }
   @x86_64 = @@images.find_all{|x| x[:aws_architecture] == 'x86_64'}.sort {|x,y| x[:aws_location] <=> y[:aws_location] }
   erb :images

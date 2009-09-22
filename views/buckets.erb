@@ -1,12 +1,12 @@
 <form action="/<%= @project %>/buckets" method="post">
-  <input type="text" name="bucket[name]" value="" />
-  <select name="bucket[location]">
-    <option value="eu">EU</option>
-    <option value="us">US</option>
+  Name: <input type="text" name="bucket[name]" value="" />
+  Location: <select name="bucket[location]">
+    <option value="eu">Europe</option>
+    <option value="us">United States</option>
   </select>
-  <input type="submit">
+  <input type="submit" value="Create">
 </form>
 <%= table(@buckets) do |bucket|
   result = link_to('view', "/#{@project}/bucket/#{bucket[:name]}/keys") 
-  result << ' ' + link_to('delete', "/#{@project}/bucket/#{bucket[:name]}/delete")
+  result << ' | ' + link_to('destroy', "/#{@project}/bucket/#{bucket[:name]}/delete", :onclick => "return confirm('Are you sure you want to delete bucket #{bucket[:name]}?')")
  end %>

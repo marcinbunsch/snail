@@ -37,7 +37,8 @@ module Helpers
     end
   
   def table(collection, *columns)   
-    raise 'Collection element is not a hash' if collection.first.class != Hash
+    return '' if collection.size == 0
+    raise 'Collection element is not a Hash' if collection.first.class != Hash
     if columns == []
       # auto load a list of keys
       first = collection.first

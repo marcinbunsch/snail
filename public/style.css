@@ -71,3 +71,8 @@ table.list th.short { width: 130px; }
 table.list td { background-color: #fff; text-align: left; font-size:0.9em; padding: 5px; vertical-align: top;}
 table.list td.options { width: 200px;  }
 table.list tr.alt td { background-color: #F5FAFA; }
+
+form { margin-bottom: 10px; padding: 5px; background-color: #eee;}
+form select,
+form input { border:1px solid #999; }
+form input { padding: 1px; font-size: 0.9em; position: relative; top: -1px;}

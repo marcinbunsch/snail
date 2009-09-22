@@ -1,5 +1,6 @@
 <% @title = 'Instances' %>
-
+<%= table(@instances, :aws_state, :aws_instance_id, :aws_availability_zone, :aws_instance_type, :aws_groups) %>
+<br />
 <% unless @instances.empty? %>
 
     <div id="instances">
@@ -43,6 +44,6 @@
 <% else %>
 
     <p><i>You have no current instances.</i></p>
-    <p><%= link_to 'Choose an image', '/images' %> to launch a new instance.</p>
+    <p><%= link_to 'Choose an image', "/#{@project}/images" %> to launch a new instance.</p>
 
 <% end %>
