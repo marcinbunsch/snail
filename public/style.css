@@ -60,3 +60,14 @@ body {
 	z-index:1002;
 	overflow: auto;
 }
+
+a { color: #36B2E5; text-decoration: none;}
+a:hover { text-decoration: underline;}
+
+/* this table is inspired by http://www.duoh.com/csstutorials/csstables/ */
+table.list { background-color: #C1DAD7; border-spacing:1px; border: 0px; width: 100%;}
+table.list th { background-color: #D3EDEE; color: #4F6B83; font-size: 0.7em; padding: 5px; text-transform: uppercase; font-weight: bold;}
+table.list th.short { width: 130px; }
+table.list td { background-color: #fff; text-align: left; font-size:0.9em; padding: 5px; vertical-align: top;}
+table.list td.options { width: 200px;  }
+table.list tr.alt td { background-color: #F5FAFA; }

@@ -36,5 +36,28 @@ module Helpers
       return time
     end
   
+  def table(collection, *columns)   
+    raise 'Collection element is not a hash' if collection.first.class != Hash
+    if columns == []
+      # auto load a list of keys
+      first = collection.first
+      columns = first.keys
+    end
+    html = '<table class="list">'
+    html << "\n<tr><th>" + columns.join('</th><th>') + '</th>'
+    html << '<th>options</th>' if block_given?
+    html << '</tr>'
+    iterator = 0
+    collection.each do |item|
+      html << "\n<tr#{ ' class="alt"' if iterator%2==0}>"
+      item.each_pair { |key, value| html << "<td>#{value}</td>" if columns.include?(key.to_sym) }
+      if block_given?
+        html << "<td>#{yield(item)}</td>" 
+      end
+      html << '<tr>'
+      iterator += 1
+    end
+    html << "\n</table>"
+  end
   
 end

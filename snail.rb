@@ -19,10 +19,6 @@ config_file = YAML.load_file("config/snail.yml")
 set :config, config_file
 set :projects, config_file.keys
 
-configure do
-  set :sessions, true
-end
-
 before do
   @projects = options.projects
   first = request.path.split('/')[1]

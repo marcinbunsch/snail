@@ -1,3 +1,12 @@
-<% @buckets.each do |bucket| %>
-    <%= bucket %> <%= link_to 'keys', "/bucket/#{bucket}/keys" %><br/>
-<% end %>
+<form action="/<%= @project %>/buckets" method="post">
+  <input type="text" name="bucket[name]" value="" />
+  <select name="bucket[location]">
+    <option value="eu">EU</option>
+    <option value="us">US</option>
+  </select>
+  <input type="submit">
+</form>
+<%= table(@buckets) do |bucket|
+  result = link_to('view', "/#{@project}/bucket/#{bucket[:name]}/keys") 
+  result << ' ' + link_to('delete', "/#{@project}/bucket/#{bucket[:name]}/delete")
+ end %>
