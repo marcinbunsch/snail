@@ -1,1 +1,6 @@
-<%= table(@keys) { |key| link_to('link', key[:link]) } %>
+<form enctype="multipart/form-data" action="/<%= @project %>/bucket/<%= params[:bucket_name] %>/upload" method="post">
+  File: <input type="file" name="bucket[upload]" value="" />
+  
+  <input type="submit" value="Upload">
+</form>
+<%= table(@keys) { |key| link_to('link', key[:link]) + ' ' + link_to('delete', "/#{@project}/bucket/#{params[:bucket_name]}/key/#{key[:name]}/delete") } %>

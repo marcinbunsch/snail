@@ -61,4 +61,8 @@ module Helpers
     html << "\n</table>"
   end
   
+  def to_query(hash = {})
+    raise 'Not a hash' if hash.class != Hash
+    hash.keys.collect { |key| "#{key}=#{hash[key]}" }.join('&amp;')
+  end
 end

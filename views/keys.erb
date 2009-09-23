@@ -11,5 +11,5 @@
 
 <%= table(@keys, :aws_key_name) { |key| link_to(
     image_tag('minus.png', :alt => 'Delete Key Pair'), 
-    "/key/#{key[:aws_key_name]}/delete", :onclick => "return confirm('Delete Key: Are you sure?')"
+    "/#{@project}/key/#{key[:aws_key_name]}/delete", :onclick => "return confirm('Delete Key: Are you sure?')"
 )} %>

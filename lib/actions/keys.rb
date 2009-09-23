@@ -7,7 +7,7 @@ end
 
 get '/:project/key/:key_name/delete' do
   @ec2.delete_key_pair(params[:key_name])
-  redirect '/keys'
+  redirect "/#{@project}/keys"
 end
 
 post '/:project/key' do

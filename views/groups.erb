@@ -17,14 +17,14 @@
         ) %>
         <br/><br/>
             
-        <%= table(group[:aws_perms]) %>
+        <%= table(group[:aws_perms]) { |perm| link_to('Revoke', "/#{@project}/group/#{group[:aws_group_name]}/revoke?#{to_query(perm)}")} %>
         
       
 
         <%= link_to'+ Add new rule', '#', :onclick => "$('#add_rule_#{group[:aws_group_name]}').toggle()" %>
         
         <div id="add_rule_<%= group[:aws_group_name] %>" class="add_rule">
-            <form action="/group/<%= group[:aws_group_name] %>/authorize" method="POST">
+            <form action="/<%= @project %>/group/<%= group[:aws_group_name] %>/authorize" method="POST">
                 <select name="protocol">
                     <option value="tcp">tcp</option>
                     <option value="udp">udp</option>

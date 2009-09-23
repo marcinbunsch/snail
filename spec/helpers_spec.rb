@@ -16,13 +16,13 @@ describe Helpers do
     it 'should render table with no columns' do
       result = table(@collection)
       result.include?('<tr><th>name</th><th>email</th><th>id</th></tr>').should == true
-      result.include?('<tr><td>Foo</td><td>foo@example.com</td><td>11</td><tr>').should == true
+      result.include?('<tr class="alt"><td>Foo</td><td>foo@example.com</td><td>11</td><tr>').should == true
     end
     
     it 'should render table with a block' do
       result =  table(@collection) { |item| 'copy'  }
       result.include?('<tr><th>name</th><th>email</th><th>id</th><th>options</th></tr>').should == true
-      result.include?('<tr><td>Foo</td><td>foo@example.com</td><td>11</td><td>copy</td><tr>').should == true
+      result.include?('<tr class="alt"><td>Foo</td><td>foo@example.com</td><td>11</td><td>copy</td><tr>').should == true
     end
     
     it 'should render table with columns and block' do
