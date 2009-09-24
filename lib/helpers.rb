@@ -42,7 +42,7 @@ module Helpers
     if columns == []
       # auto load a list of keys
       first = collection.first
-      columns = first.keys
+      columns = first.keys.collect { |item| item.to_s }.sort
     end
     html = '<table class="list">'
     html << "\n<tr><th>" + columns.join('</th><th>') + '</th>'
@@ -51,7 +51,7 @@ module Helpers
     iterator = 0
     collection.each do |item|
       html << "\n<tr#{ ' class="alt"' if iterator%2==0}>"
-      item.each_pair { |key, value| html << "<td>#{value}</td>" if columns.include?(key.to_sym) }
+      columns.each { |key| html << "<td>#{item[key.to_sym]}</td>"  }
       if block_given?
         html << "<td>#{yield(item)}</td>" 
       end
