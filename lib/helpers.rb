@@ -65,4 +65,5 @@ module Helpers
     raise 'Not a hash' if hash.class != Hash
     hash.keys.collect { |key| "#{key}=#{hash[key]}" }.join('&amp;')
   end
+  
 end
