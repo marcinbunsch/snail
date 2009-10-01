@@ -15,7 +15,7 @@ describe Helpers do
     
     it 'should render table with no columns' do
       result = table(@collection)
-      result.include?('<tr><th>email</th><th>id</th><th>name</th></tr>').should == true
+      result.include?('AAA<tr><th>email</th><th>id</th><th>name</th></tr>').should == true
       result.include?('<tr class="alt"><td>foo@example.com</td><td>11</td><td>Foo</td><tr>').should == true
     end
     
